@@ -85,13 +85,17 @@ namespace WpfClient
             // Pass the file name without the path.
             string name = fInfo.FullName;
             //fileCrypto.EncryptFile(name);
-            if (password1 == password2)
+            if (password1.Value == password2.Value)
             {
                 string copyFile = name + ".crstr";
                 fileTextBox.Text = copyFile;
                 System.IO.File.Copy(name, copyFile);
                 Encryption.EncryptFile(name, copyFile, passwordBox1.Password);
                 System.IO.File.Delete(name);
+
+                encryptButton.IsEnabled = true;
+                decryptBtton.IsEnabled = false;
+                passwordBox2.IsEnabled = true;
 
                 //fileCrypto.EncryptFile(name, password1);
             }
@@ -106,7 +110,7 @@ namespace WpfClient
         private void decryptBtton_Click(object sender, RoutedEventArgs e)
         {
             //fileCrypto.DecryptFile(fileTextBox.Text);
-            if (password1 == password2)
+            if (password1.Value == password2.Value)
             {
                 string filepath = fileTextBox.Text.Substring(0,fileTextBox.Text.LastIndexOf('.'));
 
@@ -115,6 +119,10 @@ namespace WpfClient
                 Encryption.DecryptFile(fileTextBox.Text, filepath, passwordBox1.Password);
                 System.IO.File.Delete(fileTextBox.Text);
                 fileTextBox.Text = filepath;
+
+                encryptButton.IsEnabled = false;
+                decryptBtton.IsEnabled = true;
+                passwordBox2.IsEnabled = false;
                 //fileCrypto.DecryptFile(fileTextBox.Text, password1);
             }
             else
@@ -177,7 +185,7 @@ namespace WpfClient
                     decryptBtton.IsEnabled = true;
                     passwordBox2.IsEnabled = false; 
                 }
-                else if(password1 == password2 && ValidatePassword(password1) )
+                else if(password1.Value == password2.Value && ValidatePassword(password1) )
                 {
                     encryptButton.IsEnabled = true;
                     decryptBtton.IsEnabled = false;
@@ -226,7 +234,7 @@ namespace WpfClient
                 case PasswordScore.VeryWeak: 
                     password.Message = "Password Very Weak";
                     password.MessageColor = Brushes.OrangeRed;
-                    return true;
+                    return false;
                 case PasswordScore.Weak:
                     password.Message = "Password Weak";
                     password.MessageColor = Brushes.Orange; 
