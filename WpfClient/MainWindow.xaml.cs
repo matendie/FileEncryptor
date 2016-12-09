@@ -40,15 +40,11 @@ namespace WpfClient
             _password1 = new Password();
             _password2 = new Password();
 
-            encryptWindow = new EncryptionPassword(_password1, _password2, EncryptionPasswordCallBack);
+            
              
         }
 
-        private void EncryptionPasswordCallBack(Password password1, Password password2)
-        {
-            _password1 = password1;
-            _password2 = password2;
-        }
+        
         private void EncryptWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             
@@ -177,10 +173,20 @@ namespace WpfClient
         }
          
 
-        private void button_Click(object sender, RoutedEventArgs e)
-        {                         
-            encryptWindow.ShowDialog();
+        private void encryptFileButton_Click(object sender, RoutedEventArgs e)
+        {
             encryptWindow = new EncryptionPassword(_password1, _password2, EncryptionPasswordCallBack);
+            encryptWindow.ShowDialog();
+            encryptWindow.Close();
+        }
+
+        private void EncryptionPasswordCallBack(Password password1, Password password2)
+        {
+            _password1 = password1;
+            _password2 = password2;
+
+            passwordBox1.Password = _password1.Value;
+            passwordBox2.Password = _password2.Value;
         }
     }
 }

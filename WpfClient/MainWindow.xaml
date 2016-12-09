@@ -15,14 +15,6 @@
         <PasswordBox x:Name="passwordBox2" HorizontalAlignment="Left" Margin="10,117,0,0" VerticalAlignment="Top" Width="235"   PasswordChanged="passwordBox2_PasswordChanged"/> 
         <Label x:Name="pass1Label" Content="" HorizontalAlignment="Left" Margin="250,86,0,0" VerticalAlignment="Top" Width="257" Foreground="Red"/>
         <Label x:Name="pass2Label" Content="" HorizontalAlignment="Left" Margin="250,112,0,0" VerticalAlignment="Top" Width="257" Foreground="Red"/>
-        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="159" Margin="10,151,0,0" VerticalAlignment="Top" Width="497">
-            <TabItem Header="Encryption">
-                <Grid Background="White"/>
-            </TabItem>
-            <TabItem Header="Decryption">
-                <Grid Background="White"/>
-            </TabItem>
-        </TabControl>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="321,10,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
+        <Button x:Name="encryptFileButton" Content="Encrypt File" HorizontalAlignment="Left" Margin="321,10,0,0" VerticalAlignment="Top" Width="88" Click="encryptFileButton_Click"/>
     </Grid>
 </Window>
