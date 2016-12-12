@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WpfClient
 {
@@ -43,8 +33,7 @@ namespace WpfClient
         {
             InitializeComponent();
             _password1 = password1;
-            _password2 = password2; 
-            //this.Closed += EncryptionPassword_Closed;
+            _password2 = password2;  
             _callback = callback;
             encrypt_button.IsEnabled = false;
 
@@ -64,12 +53,7 @@ namespace WpfClient
             darkGreenBrush  = new SolidColorBrush(darkGreen);
             grayBrush       = new SolidColorBrush(gray);
         }
-
-        private void EncryptionPassword_Closed(object sender, EventArgs e)
-        {
-            //_callback(_password1, _password2);
-        }
-         
+          
         private void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             _password1.Value = passwordBox.Password;

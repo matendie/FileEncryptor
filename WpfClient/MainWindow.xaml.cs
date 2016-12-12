@@ -1,25 +1,12 @@
 ﻿using FileCryptography;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Text.RegularExpressions;
-using static WpfClient.PasswordAdvisor;
-using System.Diagnostics;
-using System.Collections.ObjectModel;
 
 namespace WpfClient
 {
@@ -32,8 +19,8 @@ namespace WpfClient
         internal Password _password1;
         internal Password _password2;
            
-        WpfClient.EncryptionPassword encryptWindow;
-        WpfClient.DecryptionPassword decryptWindow;
+        EncryptionPassword encryptWindow;
+        DecryptionPassword decryptWindow;
         ObservableCollection<Encryptable> items;
         Encryptable selectedFile;
 
@@ -53,7 +40,7 @@ namespace WpfClient
             selectedFile = new Encryptable();
             selectedFile.ValueChanged += SelectedFile_ValueChanged;
         }
-
+         
         private void SelectedFile_ValueChanged(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(selectedFile.Name))
@@ -85,7 +72,7 @@ namespace WpfClient
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
             openFileDialog1.InitialDirectory = "c:\\";
-            openFileDialog1.Filter = "All files (*.*)|*.*";
+            openFileDialog1.Filter = "Image Files(*.txt;*.csv;*.config)|*.txt;*.csv;*.config";
             openFileDialog1.FilterIndex = 2;
             openFileDialog1.RestoreDirectory = true;
 
@@ -116,93 +103,6 @@ namespace WpfClient
                 }
             }
         }
-
-        //private void encryptButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    FileInfo fInfo = new FileInfo(fileTextBox.Text); 
-        //    string name = fInfo.FullName; 
-        //    if (_password1.Value == _password2.Value)
-        //    {
-        //        string copyFile = name + ".crstr";
-        //        fileTextBox.Text = copyFile;
-        //        System.IO.File.Copy(name, copyFile);
-        //        Encryption.EncryptFile(name, copyFile, passwordBox1.Password);
-        //        System.IO.File.Delete(name);
-
-        //        encryptButton.IsEnabled = true;
-        //        decryptBtton.IsEnabled = false;
-        //        passwordBox2.IsEnabled = true;
-                 
-        //    }
-        //    else
-        //    {
-        //        passwordBox1.Background = Brushes.Red;
-        //        passwordBox2.Background = Brushes.Red;
-        //    }
-
-        //}
-
-        //private void decryptBtton_Click(object sender, RoutedEventArgs e)
-        //{ 
-        //    if (_password1.Value == _password2.Value)
-        //    {
-        //        string filepath = fileTextBox.Text.Substring(0,fileTextBox.Text.LastIndexOf('.'));
-                 
-        //        System.IO.File.Copy(fileTextBox.Text, filepath);
-        //        Encryption.DecryptFile(fileTextBox.Text, filepath, passwordBox1.Password);
-        //        System.IO.File.Delete(fileTextBox.Text);
-        //        fileTextBox.Text = filepath;
-
-        //        encryptButton.IsEnabled = false;
-        //        decryptBtton.IsEnabled = true;
-        //        passwordBox2.IsEnabled = false; 
-        //    }
-        //    else
-        //    {
-        //        passwordBox1.Background = Brushes.Red;
-        //        passwordBox2.Background = Brushes.Red;
-        //    }
-        //}
-         
-        //private void fileTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-        //    if (File.Exists(fileTextBox.Text))
-        //    {
-        //        _password1.Value = passwordBox1.Password;
-                 
-        //        if (fileTextBox.Text.EndsWith(".crstr") && _password1.Validate())
-        //        {
-        //            encryptButton.IsEnabled = false;
-        //            decryptBtton.IsEnabled = true;
-        //            passwordBox2.IsEnabled = false; 
-        //        }
-        //        else if(_password1.Value == _password2.Value && _password1.Validate())
-        //        {
-        //            encryptButton.IsEnabled = true;
-        //            decryptBtton.IsEnabled = false;
-        //            passwordBox2.IsEnabled = true;
-        //        }
-                
-        //    }
-        //}
-
-        //private void passwordBox1_PasswordChanged(object sender, RoutedEventArgs e)
-        //{
-        //    _password1.Value = passwordBox1.Password;
-        //    _password1.Validate(); 
-        //    pass1Label.Content = _password1.Message;
-        //    pass1Label.Foreground = _password1.MessageColor;
-
-
-        //}
-
-        //private void passwordBox2_PasswordChanged(object sender, RoutedEventArgs e)
-        //{
-        //    _password2.Value = passwordBox2.Password;
-        //    _password2.Validate();
-        //    pass2Label.Content = _password2.Message;
-        //    pass2Label.Foreground = _password2.MessageColor;
-        //}
           
         private void encryptFileButton_Click(object sender, RoutedEventArgs e)
         { 
@@ -248,18 +148,25 @@ namespace WpfClient
 
             FileInfo fInfo = new FileInfo(selectedFile.FilePath);
             string name = fInfo.FullName;
-             
 
             System.IO.File.Copy(name, oldfilepath);
-            Encryption.DecryptFile(name, oldfilepath, _password.Value);
-            System.IO.File.Delete(name);
-            int indexToRemove = selectedFile.Index;
 
-            selectedFile.FilePath = oldfilepath;
-            selectedFile.Name = System.IO.Path.GetFileName(oldfilepath);
-            selectedFile.Index = items.Count - 1;
-            items.Add(selectedFile);
-            items.RemoveAt(indexToRemove);
+            if (Encryption.DecryptFile(name, oldfilepath, _password.Value))
+            {
+                
+                System.IO.File.Delete(name);
+                int indexToRemove = selectedFile.Index;
+
+                selectedFile.FilePath = oldfilepath;
+                selectedFile.Name = System.IO.Path.GetFileName(oldfilepath);
+                selectedFile.Index = items.Count - 1;
+                items.Add(selectedFile);
+                items.RemoveAt(indexToRemove);
+            }
+            else
+            {
+                System.IO.File.Delete(oldfilepath);
+            }
         }
 
         private void TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
