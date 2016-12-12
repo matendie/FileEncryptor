@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Security;
 using System.Security.Cryptography;
-using System.Runtime.InteropServices;
 using System.Windows;
 
 namespace FileCryptography
@@ -14,7 +8,13 @@ namespace FileCryptography
     public static class Encryption
     {
          
-        
+        //private static SHA512Managed getKey(string)
+        //{
+        //    byte[] salt = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7 };
+        //    derive pwdGen = new SHA512Managed(sKey, salt, 1000);
+        //    return pwdGen;
+        //}
+
         private static Rfc2898DeriveBytes getKey(string sKey)
         { 
             byte[] salt = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7 };
