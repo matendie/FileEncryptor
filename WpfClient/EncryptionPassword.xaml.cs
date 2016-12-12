@@ -22,18 +22,52 @@ namespace WpfClient
         Password _password1;
         Password _password2;
         private Action<Password, Password> _callback;
+
+        SolidColorBrush redBrush       ;
+        SolidColorBrush orangeBrush    ;
+        SolidColorBrush yellowBrush    ;
+        SolidColorBrush lightGreenBrush;
+        SolidColorBrush greenBrush     ;
+        SolidColorBrush darkGreenBrush ;
+        SolidColorBrush grayBrush;
+
+        Color red        ;
+        Color orange     ;
+        Color yellow     ;
+        Color lightGreen ;
+        Color green      ;
+        Color darkGreen  ;
+        Color gray;
+
         public EncryptionPassword(Password password1, Password password2, Action<Password, Password> callback)
         {
             InitializeComponent();
             _password1 = password1;
             _password2 = password2; 
-            this.Closed += EncryptionPassword_Closed;
+            //this.Closed += EncryptionPassword_Closed;
             _callback = callback;
+            encrypt_button.IsEnabled = false;
+
+            red        = (Color)ColorConverter.ConvertFromString("#FF0000");
+            orange     = (Color)ColorConverter.ConvertFromString("#FF9300");
+            yellow     = (Color)ColorConverter.ConvertFromString("#FFD040");
+            lightGreen = (Color)ColorConverter.ConvertFromString("#A4FF72");
+            green      = (Color)ColorConverter.ConvertFromString("#06CB00");
+            darkGreen  = (Color)ColorConverter.ConvertFromString("#00A109");
+            gray       = (Color)ColorConverter.ConvertFromString("#D3D3D3");
+
+            redBrush        = new SolidColorBrush(red);
+            orangeBrush     = new SolidColorBrush(orange);
+            yellowBrush     = new SolidColorBrush(yellow);
+            lightGreenBrush = new SolidColorBrush(lightGreen);
+            greenBrush      = new SolidColorBrush(green);
+            darkGreenBrush  = new SolidColorBrush(darkGreen);
+            grayBrush       = new SolidColorBrush(gray);
         }
 
         private void EncryptionPassword_Closed(object sender, EventArgs e)
         {
-            _callback(_password1, _password2);
+            //_callback(_password1, _password2);
         }
          
         private void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
@@ -41,32 +75,23 @@ namespace WpfClient
             _password1.Value = passwordBox.Password;
             _password1.Validate();
             pass1Label.Content = _password1.Message;
-            pass1Label.Foreground = _password1.MessageColor;
+            pass1Label.Foreground = _password1.MessageColor; 
 
+            ChangePasswordStrengthColor();
+            if (passwordBox.Password == passwordBox1.Password)
+            {
+                encrypt_button.IsEnabled = true;
+            }
+            else
+            {
+                encrypt_button.IsEnabled = false;
+            }
+        }
 
-            Color red = (Color)ColorConverter.ConvertFromString("#FF0000");
-            SolidColorBrush redBrush = new SolidColorBrush(red);
-
-            Color orange = (Color)ColorConverter.ConvertFromString("#FF9300");
-            SolidColorBrush orangeBrush = new SolidColorBrush(orange);
-
-            Color yellow = (Color)ColorConverter.ConvertFromString("#FFD040");
-            SolidColorBrush yellowBrush = new SolidColorBrush(yellow);
-
-            Color lightGreen = (Color)ColorConverter.ConvertFromString("#A4FF72");
-            SolidColorBrush lightGreenBrush = new SolidColorBrush(lightGreen);
-
-            Color green = (Color)ColorConverter.ConvertFromString("#06CB00");
-            SolidColorBrush greenBrush = new SolidColorBrush(green);
-
-            Color darkGreen = (Color)ColorConverter.ConvertFromString("#00A109");
-            SolidColorBrush darkGreenBrush = new SolidColorBrush(darkGreen);
-
-            Color gray = (Color)ColorConverter.ConvertFromString("#D3D3D3");
-            SolidColorBrush grayBrush = new SolidColorBrush(gray);
-            pass2Label.Content = _password1.Score + " - " + _password1.Value;
+        private void ChangePasswordStrengthColor()
+        {
             switch (_password1.Score)
-            { 
+            {
                 case 0:
                     passLevel0.Fill = redBrush;
                     passLevel1.Fill = grayBrush;
@@ -113,19 +138,33 @@ namespace WpfClient
                     passLevel2.Fill = yellowBrush;
                     passLevel3.Fill = lightGreenBrush;
                     passLevel4.Fill = greenBrush;
-                    passLevel5.Fill = darkGreenBrush; 
-                    break;                    
+                    passLevel5.Fill = darkGreenBrush;
+                    break;
                 default:
                     break;
             }
         }
-         
+
         private void passwordBox1_PasswordChanged(object sender, RoutedEventArgs e)
         {
             _password2.Value = passwordBox1.Password;
             _password2.Validate();
             pass2Label.Content = _password2.Message;
             pass2Label.Foreground = _password2.MessageColor;
+            if(passwordBox.Password == passwordBox1.Password)
+            {
+                encrypt_button.IsEnabled = true;
+            }
+            else
+            {
+                encrypt_button.IsEnabled = false;
+            }
+        }
+
+        private void encrypt_button_Click(object sender, RoutedEventArgs e)
+        {
+            _callback(_password1, _password2);
+            this.Close();
         }
     }
 }

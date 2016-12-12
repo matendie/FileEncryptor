@@ -8,13 +8,21 @@
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <Button x:Name="browseButton" Content="Browse" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="browseButton_Click"/>
-        <TextBox x:Name="fileTextBox" Height="23" Margin="10,37,10,0" TextWrapping="Wrap" Text="" ToolTip="File Path" VerticalAlignment="Top" TextChanged="fileTextBox_TextChanged" />
-        <Button x:Name="encryptButton" Content="Encrypt" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Click="encryptButton_Click"/>
-        <Button x:Name="decryptBtton" Content="Decrypt" HorizontalAlignment="Left" Margin="170,10,0,0" VerticalAlignment="Top" Width="75" Click="decryptBtton_Click"/> 
-        <PasswordBox x:Name="passwordBox1" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="235"   PasswordChanged="passwordBox1_PasswordChanged"/>
-        <PasswordBox x:Name="passwordBox2" HorizontalAlignment="Left" Margin="10,117,0,0" VerticalAlignment="Top" Width="235"   PasswordChanged="passwordBox2_PasswordChanged"/> 
-        <Label x:Name="pass1Label" Content="" HorizontalAlignment="Left" Margin="250,86,0,0" VerticalAlignment="Top" Width="257" Foreground="Red"/>
-        <Label x:Name="pass2Label" Content="" HorizontalAlignment="Left" Margin="250,112,0,0" VerticalAlignment="Top" Width="257" Foreground="Red"/>
-        <Button x:Name="encryptFileButton" Content="Encrypt File" HorizontalAlignment="Left" Margin="321,10,0,0" VerticalAlignment="Top" Width="88" Click="encryptFileButton_Click"/>
+        
+        <Button x:Name="encryptFileButton" Content="Encrypt File" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="88" Click="encryptFileButton_Click"/>
+        <Button x:Name="decryptFileButton" Content="Decrypt File" HorizontalAlignment="Left" Margin="183,10,0,0" VerticalAlignment="Top" Width="88" Click="decryptFileButton_Click"/>
+        
+        <ListView  x:Name="filesListBox" HorizontalAlignment="Left" Height="273" Margin="10,37,0,0" VerticalAlignment="Top" Width="497" SelectionChanged="filesListBox_SelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel>
+                        <TextBlock Text="File: " />
+                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                        <TextBlock Text=", " />
+                        <TextBlock Text="{Binding FilePath}" TextDecorations="Underline" Foreground="Blue" Cursor="Hand" MouseLeftButtonUp="TextBlock_MouseLeftButtonUp" /> 
+                    </WrapPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>

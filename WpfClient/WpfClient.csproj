@@ -54,6 +54,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="DecryptionPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EncryptionPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -66,6 +70,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DecryptionPassword.xaml.cs">
+      <DependentUpon>DecryptionPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Encryptable.cs" />
     <Compile Include="EncryptionPassword.xaml.cs">
       <DependentUpon>EncryptionPassword.xaml</DependentUpon>
     </Compile>
